@@ -45,3 +45,6 @@ pp.Folder.test2.set_json({"title": "bar", "body": "foo", "userId": 1})
 response = pp.Folder.test2()
 print(response.json())
 print(response.status_code)
+
+#TODO: add assertion for urlencoded
+#TODO: add assertion for collections without folders

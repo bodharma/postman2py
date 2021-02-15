@@ -5,7 +5,7 @@ from copy import copy
 
 import requests
 
-from postpy2.extractors import extract_dict_from_raw_headers, extract_dict_from_headers, extract_dict_from_raw_mode_data, format_object, extract_dict_from_formdata_mode_data, exctact_dict_from_files
+from postpy2.extractors import extract_dict_from_raw_headers, extract_dict_from_headers, extract_dict_from_raw_mode_data, format_object, extract_dict_from_formdata_mode_data, exctact_dict_from_files, extract_dict_from_urlencoded
 
 
 class CaseSensitiveDict(dict):
@@ -24,25 +24,37 @@ class CaseSensitiveDict(dict):
 
 
 class PostPython:
-    def __init__(self, postman_collection_file_path):
+    def __init__(self, postman_collection_file_path, no_folder=False):
         with open(postman_collection_file_path, encoding='utf8') as postman_collection_file:
             self.__postman_collection = json.load(postman_collection_file)
 
+        self.__no_folder = no_folder
         self.__folders = {}
         self.environments = CaseSensitiveDict()
         self.__load()
 
     def __load(self):
-        for fol in self.__postman_collection['item']:
-            requests_list = {}
-            for request in fol['item']:
-                if 'request' in request:
-                    request['request']['name'] = request['name']
-                    requests_list[normalize_func_name(
-                        request['name'])] = PostRequest(self, request['request'])
 
-            col_name = normalize_class_name(fol['name'])
-            self.__folders[col_name] = PostCollection(col_name, requests_list)
+        if self.__no_folder:
+            requests_list = {}
+            requests = self.__postman_collection['item']
+            for request in requests:
+                request['request']['name'] = request['name']
+                requests_list[normalize_func_name(
+                    request['name'])] = PostRequest(self, request['request'])
+            self.__folders["default"] = PostCollection("default", requests_list)
+        else:
+            folders = self.__postman_collection['item']
+            for fol in folders:
+                requests_list = {}
+                for request in fol['item']:
+                    if 'request' in request:
+                        request['request']['name'] = request['name']
+                        requests_list[normalize_func_name(
+                            request['name'])] = PostRequest(self, request['request'])
+
+                col_name = normalize_class_name(fol['name'])
+                self.__folders[col_name] = PostCollection(col_name, requests_list)
 
     def __getattr__(self, item):
         if item in self.__folders:
@@ -103,6 +115,8 @@ class PostRequest:
         if 'body' in data and data['body']['mode'] == 'formdata' and 'formdata' in data['body']:
             self.request_kwargs['data'], self.request_kwargs['files'] = extract_dict_from_formdata_mode_data(
                 data['body']['formdata'])
+        if 'body' in data and data['body']['mode'] == 'urlencoded' and 'urlencoded' in data['body']:
+            self.request_kwargs['data'] = extract_dict_from_urlencoded(data)
         self.request_kwargs['headers'] = extract_dict_from_headers(
             data['header'])
         self.request_kwargs['method'] = data['method']

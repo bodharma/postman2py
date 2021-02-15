@@ -4,16 +4,16 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name='postpy2',
-    packages=['postpy2'],
-    version='0.0.6',
-    author='Martin Kapinos',
-    author_email='matkapi19@gmail.com',
-    description='A library to use postman collection V2 in python.',
+    name='postman2py',
+    packages=['postman2py'],
+    version='0.0.1',
+    author='Bohdan Lesiv',
+    author_email='boghdanlesiv@gmail.com',
+    description='A library to use postman collections V2.1 in python.',
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url='https://github.com/matkapi/postpy2',
-    download_url='https://codeload.github.com/matkapi/postpy2/zip/master',
+    url='https://github.com/bodharma/postman2py',
+    download_url='https://codeload.github.com/bodharma/postman2py/zip/master',
     keywords=['postman', 'rest', 'api'],  # arbitrary keywords
     install_requires=[
         'requests',

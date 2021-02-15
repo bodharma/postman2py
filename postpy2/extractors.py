@@ -73,6 +73,15 @@ def extract_dict_from_headers(data):
     return d
 
 
+def extract_dict_from_urlencoded(data):
+    body = {}
+    if len(data['body']['urlencoded']) != 0:
+        for entry in data['body']['urlencoded']:
+            for k, v in entry.items():
+                body[entry['key']] = entry['value']
+    return body
+
+
 def format_object(o, key_values):
     if isinstance(o, str):
         try:
