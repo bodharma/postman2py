@@ -1,0 +1,4 @@
+loguru
+pytest
+requests
+python-magic

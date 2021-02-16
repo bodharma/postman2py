@@ -9,7 +9,7 @@
       "name": "folder",
       "item": [
         {
-          "name": "test1",
+          "name": "test1_simple_get",
           "request": {
             "method": "GET",
             "header": [],
@@ -22,7 +22,7 @@
           "response": []
         },
         {
-          "name": "test2",
+          "name": "test2_post_raw",
           "request": {
             "method": "POST",
             "header": [
@@ -45,7 +45,7 @@
           "response": []
         },
         {
-          "name": "test file",
+          "name": "test_post_form_data_with_file",
           "request": {
             "method": "POST",
             "header": [
@@ -63,7 +63,7 @@
                 {
                   "key": "file",
                   "type": "file",
-                  "src": "/home/mato/Projects/python/postpython/aserts/1.jpg"
+                  "src": "data/1.jpg"
                 },
                 {
                   "key": "title",
@@ -92,7 +92,20 @@
         }
       ],
       "protocolProfileBehavior": {}
-    }
+    },
+    {
+          "name": "test_no_folder",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{server_url}}/get",
+              "host": ["{{server_url}}"],
+              "path": ["get"]
+            }
+          },
+          "response": []
+        }
   ],
   "protocolProfileBehavior": {}
 }
