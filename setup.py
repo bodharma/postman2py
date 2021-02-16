@@ -18,7 +18,6 @@ setuptools.setup(
     install_requires=[
         'requests',
         'python-magic',
-        'python-magic-bin',
         'loguru'
     ],
     classifiers=[
