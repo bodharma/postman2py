@@ -2,7 +2,8 @@ import json
 import ntpath
 import magic
 import os
-
+from loguru import logger
+from pathlib import Path
 
 def extract_dict_from_raw_mode_data(raw):
     """extract json to dictionay
@@ -22,9 +23,11 @@ def exctact_dict_from_files(data):
     :param data: [{"key":"filename", "src":"relative/absolute path to file"}]
     :return: :tuple of file metadata for requests library
     """
-    if not os.path.isfile(data['src']):
+    data['src'] = f"{os.getcwd()}/{data['src']}"
+    if not Path(data['src']).exists():
         raise Exception(
-            'File '+data['src']+' does not exists')
+            'File '+data['src']+' does not exist')
+
     mime = magic.Magic(mime=True)
     file_mime = mime.from_file(data['src'])
     file_name = ntpath.basename(data['src'])
@@ -43,8 +46,8 @@ def extract_dict_from_formdata_mode_data(formdata):
             if row['type'] == "file":
                 files[row['key']] = exctact_dict_from_files(row)
         return data, files
-    except Exception:
-        print("extact from formdata_mode_data error occurred: ")
+    except Exception as e:
+        logger.error(f"extract from formdata_mode_data error occurred: {e}")
         return data, files
 
 

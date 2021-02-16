@@ -5,7 +5,7 @@ from copy import copy
 
 import requests
 
-from postpy2.extractors import extract_dict_from_raw_headers, extract_dict_from_headers, extract_dict_from_raw_mode_data, format_object, extract_dict_from_formdata_mode_data, exctact_dict_from_files, extract_dict_from_urlencoded
+from postman2py.extractors import extract_dict_from_raw_headers, extract_dict_from_headers, extract_dict_from_raw_mode_data, format_object, extract_dict_from_formdata_mode_data, exctact_dict_from_files, extract_dict_from_urlencoded
 
 
 class CaseSensitiveDict(dict):
@@ -39,19 +39,21 @@ class PostPython:
             requests_list = {}
             requests = self.__postman_collection['item']
             for request in requests:
-                request['request']['name'] = request['name']
-                requests_list[normalize_func_name(
-                    request['name'])] = PostRequest(self, request['request'])
+                if 'request' in request:
+                    request['request']['name'] = request['name']
+                    requests_list[normalize_func_name(
+                        request['name'])] = PostRequest(self, request['request'])
             self.__folders["default"] = PostCollection("default", requests_list)
         else:
             folders = self.__postman_collection['item']
             for fol in folders:
                 requests_list = {}
-                for request in fol['item']:
-                    if 'request' in request:
-                        request['request']['name'] = request['name']
-                        requests_list[normalize_func_name(
-                            request['name'])] = PostRequest(self, request['request'])
+                if 'request' not in fol:
+                    for request in fol['item']:
+                        if 'request' in request:
+                            request['request']['name'] = request['name']
+                            requests_list[normalize_func_name(
+                                request['name'])] = PostRequest(self, request['request'])
 
                 col_name = normalize_class_name(fol['name'])
                 self.__folders[col_name] = PostCollection(col_name, requests_list)
