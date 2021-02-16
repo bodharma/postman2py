@@ -17,6 +17,7 @@ setuptools.setup(
     keywords=['postman', 'rest', 'api'],  # arbitrary keywords
     install_requires=[
         'requests',
+        'python-magic',
         'python-magic-bin',
         'loguru'
     ],

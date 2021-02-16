@@ -1,4 +1,5 @@
 loguru
 pytest
 requests
-python-magic-bin
+python-magic
+python-magic-bin==0.4.14
