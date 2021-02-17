@@ -1,12 +1,14 @@
 import setuptools
 
+version = '0.0.2'
+
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
     name='postman2py',
     packages=['postman2py'],
-    version='0.0.1',
+    version=version,
     author='Bohdan Lesiv',
     author_email='boghdanlesiv@gmail.com',
     description='A library to use postman collections V2.1 in python.',
